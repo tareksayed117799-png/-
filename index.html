@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="شركة الصقر للمواد الغذائية - جودة وثقة في توريد وتوزيع المواد الغذائية بالجملة والتجزئة">
+  <title>شركة الصقر للمواد الغذائية</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --green: #1f6b3a;
+      --green-dark: #14472a;
+      --gold: #e0a526;
+      --cream: #fbf8f1;
+      --text: #222;
+      --muted: #666;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Cairo', sans-serif; color: var(--text); background: var(--cream); line-height: 1.8; }
+    a { text-decoration: none; color: inherit; }
+    .container { width: min(1140px, 92%); margin-inline: auto; }
+
+    /* Header */
+    header { background: #fff; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 12px rgba(0,0,0,.08); }
+    .nav { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; }
+    .logo { font-size: 1.5rem; font-weight: 900; color: var(--green); display: flex; align-items: center; gap: 8px; }
+    .logo span { color: var(--gold); }
+    nav ul { display: flex; list-style: none; gap: 26px; }
+    nav a { font-weight: 600; transition: color .2s; }
+    nav a:hover { color: var(--gold); }
+    .menu-btn { display: none; background: none; border: 0; font-size: 1.8rem; cursor: pointer; color: var(--green); }
+
+    /* Hero */
+    .hero {
+      background: linear-gradient(135deg, rgba(20,71,42,.95), rgba(31,107,58,.85)),
+                  repeating-linear-gradient(45deg, #1f6b3a 0 20px, #1b6035 20px 40px);
+      color: #fff; text-align: center; padding: 110px 0;
+    }
+    .hero h1 { font-size: clamp(2rem, 5vw, 3.4rem); font-weight: 900; margin-bottom: 14px; }
+    .hero h1 span { color: var(--gold); }
+    .hero p { font-size: 1.15rem; max-width: 640px; margin: 0 auto 30px; opacity: .95; }
+    .btn { display: inline-block; padding: 12px 30px; border-radius: 50px; font-weight: 700; transition: transform .2s, background .2s; border: 0; cursor: pointer; font-family: inherit; font-size: 1rem; }
+    .btn:hover { transform: translateY(-3px); }
+    .btn-gold { background: var(--gold); color: #222; }
+    .btn-outline { border: 2px solid #fff; color: #fff; margin-inline-start: 10px; }
+
+    /* Sections */
+    section { padding: 80px 0; }
+    .title { text-align: center; margin-bottom: 48px; }
+    .title h2 { font-size: 2rem; color: var(--green); font-weight: 900; }
+    .title h2::after { content: ""; display: block; width: 70px; height: 4px; background: var(--gold); margin: 8px auto 0; border-radius: 4px; }
+    .title p { color: var(--muted); margin-top: 10px; }
+
+    /* About */
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
+    .about-box { background: var(--green); color: #fff; border-radius: 20px; padding: 40px; text-align: center; }
+    .about-box .num { font-size: 3rem; font-weight: 900; color: var(--gold); }
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 14px; }
+    .stats div { background: rgba(255,255,255,.12); border-radius: 12px; padding: 14px 6px; }
+    .stats b { display: block; font-size: 1.5rem; color: var(--gold); }
+
+    /* Products */
+    #products { background: #fff; }
+    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; }
+    .card { background: var(--cream); border-radius: 16px; padding: 30px 20px; text-align: center; transition: transform .25s, box-shadow .25s; border: 1px solid #eee; }
+    .card:hover { transform: translateY(-8px); box-shadow: 0 14px 30px rgba(0,0,0,.1); }
+    .card .icon { font-size: 3rem; }
+    .card h3 { color: var(--green); margin: 10px 0 6px; }
+    .card p { color: var(--muted); font-size: .95rem; }
+
+    /* Why us */
+    .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 24px; }
+    .feature { background: #fff; padding: 28px; border-radius: 16px; border-right: 5px solid var(--gold); box-shadow: 0 4px 14px rgba(0,0,0,.06); }
+    .feature h3 { color: var(--green); margin-bottom: 6px; }
+
+    /* Contact */
+    #contact { background: #fff; }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 40px; }
+    .info p { margin-bottom: 14px; font-size: 1.05rem; }
+    form { display: grid; gap: 14px; }
+    input, textarea { width: 100%; padding: 13px 16px; border: 1px solid #ddd; border-radius: 10px; font-family: inherit; font-size: 1rem; background: var(--cream); }
+    input:focus, textarea:focus { outline: 2px solid var(--gold); }
+    textarea { min-height: 130px; resize: vertical; }
+    .btn-green { background: var(--green); color: #fff; }
+    .msg { color: var(--green); font-weight: 700; display: none; }
+
+    /* Footer */
+    footer { background: var(--green-dark); color: #ddd; text-align: center; padding: 26px 0; }
+    footer span { color: var(--gold); }
+
+    @media (max-width: 800px) {
+      .menu-btn { display: block; }
+      nav ul { display: none; position: absolute; top: 100%; right: 0; left: 0; background: #fff; flex-direction: column; padding: 16px 4%; gap: 12px; box-shadow: 0 8px 14px rgba(0,0,0,.08); }
+      nav ul.open { display: flex; }
+      .about-grid, .contact-grid { grid-template-columns: 1fr; }
+      .btn-outline { margin: 10px 0 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="container nav">
+      <a href="#home" class="logo">🦅 الصقر <span>للمواد الغذائية</span></a>
+      <button class="menu-btn" id="menuBtn" aria-label="القائمة">☰</button>
+      <nav>
+        <ul id="menu">
+          <li><a href="#home">الرئيسية</a></li>
+          <li><a href="#about">من نحن</a></li>
+          <li><a href="#products">منتجاتنا</a></li>
+          <li><a href="#why">لماذا نحن</a></li>
+          <li><a href="#contact">اتصل بنا</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero" id="home">
+    <div class="container">
+      <h1>شركة <span>الصقر</span> للمواد الغذائية</h1>
+      <p>نوفّر لك أجود المواد الغذائية بأسعار منافسة، مع توريد سريع وخدمة موثوقة للجملة والتجزئة.</p>
+      <a href="#products" class="btn btn-gold">تصفح منتجاتنا</a>
+      <a href="#contact" class="btn btn-outline">تواصل معنا</a>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="container about-grid">
+      <div>
+        <div class="title" style="text-align:right">
+          <h2 style="display:inline-block">من نحن</h2>
+        </div>
+        <p>شركة الصقر للمواد الغذائية شركة متخصصة في استيراد وتوريد وتوزيع المواد الغذائية بمختلف أنواعها. نلتزم بأعلى معايير الجودة والسلامة الغذائية، ونسعى لبناء علاقات طويلة الأمد مع عملائنا من المحلات والمطاعم والفنادق والمصانع.</p>
+        <p style="margin-top:12px">رؤيتنا أن نكون الخيار الأول في مجال المواد الغذائية عبر الجودة، والأمانة، والالتزام بمواعيد التسليم.</p>
+      </div>
+      <div class="about-box">
+        <div class="num">+15</div>
+        <p>سنة من الخبرة في السوق</p>
+        <div class="stats">
+          <div><b>+500</b>عميل</div>
+          <div><b>+200</b>منتج</div>
+          <div><b>24/7</b>دعم</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="products">
+    <div class="container">
+      <div class="title">
+        <h2>منتجاتنا</h2>
+        <p>تشكيلة واسعة تلبي احتياجات السوق</p>
+      </div>
+      <div class="cards">
+        <div class="card"><div class="icon">🌾</div><h3>الحبوب والأرز</h3><p>أرز، قمح، عدس، فول وحمص بأجود الأصناف.</p></div>
+        <div class="card"><div class="icon">🫒</div><h3>الزيوت والسمن</h3><p>زيوت طعام، زيت زيتون، وسمن طبيعي.</p></div>
+        <div class="card"><div class="icon">🍬</div><h3>السكر والحلويات</h3><p>سكر، عسل، مربى ومنتجات التحلية.</p></div>
+        <div class="card"><div class="icon">🥫</div><h3>المعلبات</h3><p>خضروات وفواكه ولحوم معلبة بجودة عالية.</p></div>
+        <div class="card"><div class="icon">🧀</div><h3>الألبان والأجبان</h3><p>أجبان وألبان ومشتقاتها طازجة.</p></div>
+        <div class="card"><div class="icon">☕</div><h3>المشروبات</h3><p>شاي، قهوة، عصائر ومشروبات متنوعة.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="why">
+    <div class="container">
+      <div class="title">
+        <h2>لماذا الصقر؟</h2>
+        <p>نلتزم بما يجعل عملنا مختلفاً</p>
+      </div>
+      <div class="features">
+        <div class="feature"><h3>✅ جودة مضمونة</h3><p>نختار منتجاتنا بعناية ونفحصها قبل التوزيع.</p></div>
+        <div class="feature"><h3>🚚 توصيل سريع</h3><p>أسطول نقل مجهز يضمن وصول طلبك في موعده.</p></div>
+        <div class="feature"><h3>💰 أسعار منافسة</h3><p>أسعار جملة مناسبة وعروض خاصة للعملاء الدائمين.</p></div>
+        <div class="feature"><h3>🤝 خدمة عملاء</h3><p>فريق جاهز للرد على استفساراتك ومساعدتك دائماً.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="container">
+      <div class="title">
+        <h2>اتصل بنا</h2>
+        <p>يسعدنا استقبال طلباتك واستفساراتك</p>
+      </div>
+      <div class="contact-grid">
+        <div class="info">
+          <p>📍 <b>العنوان:</b> أدخل عنوان الشركة هنا</p>
+          <p>📞 <b>الهاتف:</b> <span dir="ltr">+20 000 000 0000</span></p>
+          <p>✉️ <b>البريد:</b> <span dir="ltr">info@alsaqr-foods.com</span></p>
+          <p>🕘 <b>ساعات العمل:</b> السبت – الخميس، 9 ص – 6 م</p>
+        </div>
+        <form id="contactForm">
+          <input type="text" placeholder="الاسم الكامل" required>
+          <input type="tel" placeholder="رقم الهاتف" required>
+          <input type="email" placeholder="البريد الإلكتروني">
+          <textarea placeholder="رسالتك أو طلبك" required></textarea>
+          <button type="submit" class="btn btn-green">إرسال</button>
+          <p class="msg" id="msg">✔ تم إرسال رسالتك بنجاح، سنتواصل معك قريباً.</p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <p>© <span id="year"></span> <span>شركة الصقر للمواد الغذائية</span> - جميع الحقوق محفوظة</p>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    const menu = document.getElementById('menu');
+    document.getElementById('menuBtn').addEventListener('click', () => menu.classList.toggle('open'));
+    menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => menu.classList.remove('open')));
+
+    document.getElementById('contactForm').addEventListener('submit', e => {
+      e.preventDefault();
+      document.getElementById('msg').style.display = 'block';
+      e.target.reset();
+    });
+  </script>
+</body>
+</html>
