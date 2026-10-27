@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>منصة جامعة برج العرب التكنولوجية</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root { --blue:#0d3b78; --blue-dark:#082a57; --accent:#1aa6b7; --bg:#f3f6fb; --red:#c0392b; }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:'Cairo',sans-serif; background:var(--bg); color:#222; }
+    .hidden { display:none !important; }
+    button { font-family:inherit; cursor:pointer; }
+
+    #login { min-height:100vh; display:grid; place-items:center; background:linear-gradient(135deg,var(--blue-dark),var(--blue)); padding:20px; }
+    .login-box { background:#fff; width:min(400px,100%); border-radius:18px; padding:36px 30px; text-align:center; box-shadow:0 20px 50px rgba(0,0,0,.3); }
+    .login-box h1 { color:var(--blue); font-size:1.4rem; margin-bottom:4px; }
+    .login-box p { color:#777; margin-bottom:22px; font-size:.95rem; }
+    .login-box input { margin-bottom:12px; }
+    .err { color:var(--red); font-size:.9rem; min-height:22px; }
+
+    input, select, textarea { width:100%; padding:11px 14px; border:1px solid #d5dbe5; border-radius:10px; font-family:inherit; font-size:.95rem; background:#fff; }
+    input:focus, select:focus, textarea:focus { outline:2px solid var(--accent); }
+    textarea { min-height:70px; resize:vertical; }
+    .btn { border:0; padding:11px 22px; border-radius:10px; font-weight:700; font-size:.95rem; color:#fff; background:var(--blue); transition:.2s; }
+    .btn:hover { opacity:.88; }
+    .btn.accent { background:var(--accent); }
+    .btn.red { background:var(--red); }
+    .btn.gray { background:#6b7686; }
+    .btn.small { padding:6px 12px; font-size:.82rem; }
+    .full { width:100%; }
+
+    header { background:var(--blue); color:#fff; padding:14px 0; }
+    .wrap { width:min(1200px,94%); margin-inline:auto; }
+    .top { display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; }
+    .top h2 { font-size:1.25rem; }
+    .tabs { display:flex; gap:8px; margin:20px 0; flex-wrap:wrap; }
+    .tab { background:#fff; border:2px solid transparent; padding:10px 22px; border-radius:50px; font-weight:700; color:var(--blue); }
+    .tab.active { background:var(--blue); color:#fff; }
+    .stats { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:16px; margin-bottom:22px; }
+    .stat { background:#fff; border-radius:14px; padding:18px; box-shadow:0 3px 12px rgba(0,0,0,.06); border-right:5px solid var(--accent); }
+    .stat b { display:block; font-size:1.8rem; color:var(--blue); }
+    .panel { background:#fff; border-radius:14px; padding:22px; box-shadow:0 3px 12px rgba(0,0,0,.06); margin-bottom:22px; }
+    .panel h3 { color:var(--blue); margin-bottom:14px; }
+    .form-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px; margin-bottom:14px; }
+    label { font-size:.85rem; color:#555; display:block; margin-bottom:3px; font-weight:600; }
+    .toolbar { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:14px; }
+    .toolbar input { flex:1; min-width:200px; }
+    .toolbar select { width:auto; min-width:150px; }
+    .table-wrap { overflow-x:auto; }
+    table { width:100%; border-collapse:collapse; min-width:820px; }
+    th, td { padding:11px 10px; text-align:right; border-bottom:1px solid #edf0f5; font-size:.92rem; }
+    th { background:#eef3fa; color:var(--blue); }
+    tr:hover td { background:#fafcff; }
+    td .btn { margin-inline-end:4px; }
+    .empty { text-align:center; color:#888; padding:24px; }
+    .badge { padding:3px 10px; border-radius:20px; font-size:.8rem; font-weight:700; color:#fff; display:inline-block; }
+    .b-green { background:#27ae60; } .b-orange { background:#e67e22; } .b-gray { background:#7f8c8d; } .b-red { background:var(--red); }
+  </style>
+</head>
+<body>
+
+  <!-- تسجيل الدخول -->
+  <div id="login">
+    <form class="login-box" id="loginForm">
+      <h1>🎓 جامعة برج العرب التكنولوجية</h1>
+      <p>سجّل دخولك للمتابعة</p>
+      <input type="text" id="user" placeholder="اسم المستخدم" autocomplete="username" required>
+      <input type="password" id="pass" placeholder="كلمة المرور" autocomplete="current-password" required>
+      <div class="err" id="loginErr"></div>
+      <button class="btn full" type="submit">تسجيل الدخول</button>
+    </form>
+  </div>
+
+  <!-- المنصة -->
+  <div id="app" class="hidden">
+    <header>
+      <div class="wrap top">
+        <h2>🎓 منصة جامعة برج العرب التكنولوجية</h2>
+        <div>
+          <span id="who" style="margin-inline-end:12px"></span>
+          <button class="btn gray small" id="logoutBtn">تسجيل الخروج</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="wrap">
+      <div class="tabs">
+        <button class="tab active" data-tab="lectures">📚 المحاضرات</button>
+        <button class="tab" data-tab="students">👨‍🎓 الطلبة</button>
+      </div>
+
+      <!-- ========== المحاضرات ========== -->
+      <section id="tab-lectures">
+        <div class="stats">
+          <div class="stat"><b id="lTotal">0</b>إجمالي المحاضرات</div>
+          <div class="stat"><b id="lCourses">0</b>عدد المقررات</div>
+          <div class="stat"><b id="lUpcoming">0</b>محاضرات قادمة</div>
+        </div>
+
+        <div class="panel">
+          <h3 id="lFormTitle">إضافة محاضرة جديدة</h3>
+          <form id="lectureForm">
+            <input type="hidden" id="lEditId">
+            <div class="form-grid">
+              <div><label>عنوان المحاضرة *</label><input id="lTitle" required></div>
+              <div><label>المقرر *</label><input id="lCourse" required></div>
+              <div><label>المحاضر</label><input id="lInstructor"></div>
+              <div><label>التاريخ *</label><input id="lDate" type="date" required></div>
+              <div><label>الوقت</label><input id="lTime" type="time"></div>
+              <div><label>القاعة / المكان</label><input id="lHall"></div>
+              <div><label>النوع</label>
+                <select id="lType"><option>نظري</option><option>عملي</option><option>أونلاين</option></select>
+              </div>
+              <div><label>الحالة</label>
+                <select id="lStatus"><option>مجدولة</option><option>تمت</option><option>ملغاة</option></select>
+              </div>
+              <div><label>رابط (Zoom / ملف)</label><input id="lLink" type="url" dir="ltr" placeholder="https://"></div>
+            </div>
+            <div style="margin-bottom:14px"><label>ملاحظات</label><textarea id="lNotes"></textarea></div>
+            <button class="btn accent" type="submit">حفظ المحاضرة</button>
+            <button class="btn gray hidden" type="button" id="lCancel">إلغاء التعديل</button>
+          </form>
+        </div>
+
+        <div class="panel">
+          <h3>جدول المحاضرات</h3>
+          <div class="toolbar">
+            <input id="lSearch" placeholder="🔍 ابحث بالعنوان أو المقرر أو المحاضر...">
+            <select id="lFilter"><option value="">كل الحالات</option><option>مجدولة</option><option>تمت</option><option>ملغاة</option></select>
+            <button class="btn" id="lExport">تصدير CSV</button>
+            <button class="btn red" id="lClear">حذف الكل</button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>العنوان</th><th>المقرر</th><th>المحاضر</th><th>التاريخ</th><th>الوقت</th><th>المكان</th><th>النوع</th><th>الحالة</th><th>إجراءات</th></tr></thead>
+              <tbody id="lRows"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========== الطلبة ========== -->
+      <section id="tab-students" class="hidden">
+        <div class="stats">
+          <div class="stat"><b id="sTotal">0</b>إجمالي الطلبة</div>
+          <div class="stat"><b id="sDepts">0</b>عدد الأقسام</div>
+          <div class="stat"><b id="sGpa">0.00</b>متوسط المعدل</div>
+        </div>
+
+        <div class="panel">
+          <h3 id="sFormTitle">إضافة طالب جديد</h3>
+          <form id="studentForm">
+            <input type="hidden" id="sEditId">
+            <div class="form-grid">
+              <div><label>الكود الجامعي *</label><input id="code" required></div>
+              <div><label>الاسم بالكامل *</label><input id="name" required></div>
+              <div><label>القسم *</label><input id="dept" required></div>
+              <div><label>الفرقة *</label>
+                <select id="level" required><option value="">اختر</option><option>الأولى</option><option>الثانية</option><option>الثالثة</option><option>الرابعة</option></select>
+              </div>
+              <div><label>الهاتف</label><input id="phone" type="tel" dir="ltr"></div>
+              <div><label>البريد</label><input id="email" type="email" dir="ltr"></div>
+              <div><label>المعدل (0-4)</label><input id="gpa" type="number" step="0.01" min="0" max="4"></div>
+              <div><label>الحالة</label><select id="status"><option>مقيد</option><option>موقوف قيد</option><option>خريج</option></select></div>
+            </div>
+            <button class="btn accent" type="submit">حفظ الطالب</button>
+            <button class="btn gray hidden" type="button" id="sCancel">إلغاء التعديل</button>
+          </form>
+        </div>
+
+        <div class="panel">
+          <h3>قائمة الطلبة</h3>
+          <div class="toolbar">
+            <input id="sSearch" placeholder="🔍 ابحث بالاسم أو الكود أو القسم...">
+            <button class="btn" id="sExport">تصدير CSV</button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>الكود</th><th>الاسم</th><th>القسم</th><th>الفرقة</th><th>الهاتف</th><th>المعدل</th><th>الحالة</th><th>إجراءات</th></tr></thead>
+              <tbody id="sRows"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const ADMIN_USER = "طارق سيد";
+    const ADMIN_PASS = "12345";
+
+    const $ = id => document.getElementById(id);
+    const get = k => { try { return JSON.parse(localStorage.getItem(k)) || []; } catch { return []; } };
+    const set = (k, v) => localStorage.setItem(k, JSON.stringify(v));
+    const LK = "bat_lectures", SK = "bat_students", SESSION = "bat_session";
+
+    /* ===== تسجيل الدخول ===== */
+    function showApp() {
+      $("login").classList.add("hidden");
+      $("app").classList.remove("hidden");
+      $("who").textContent = "👤 " + ADMIN_USER;
+      renderLectures(); renderStudents();
+    }
+    $("loginForm").addEventListener("submit", e => {
+      e.preventDefault();
+      if ($("user").value.trim() === ADMIN_USER && $("pass").value === ADMIN_PASS) {
+        sessionStorage.setItem(SESSION, "1");
+        showApp();
+      } else $("loginErr").textContent = "اسم المستخدم أو كلمة المرور غير صحيحة";
+    });
+    $("logoutBtn").addEventListener("click", () => { sessionStorage.removeItem(SESSION); location.reload(); });
+    if (sessionStorage.getItem(SESSION)) showApp();
+
+    /* ===== التبويبات ===== */
+    document.querySelectorAll(".tab").forEach(t => t.addEventListener("click", () => {
+      document.querySelectorAll(".tab").forEach(x => x.classList.remove("active"));
+      t.classList.add("active");
+      ["lectures","students"].forEach(n => $("tab-" + n).classList.toggle("hidden", n !== t.dataset.tab));
+    }));
+
+    /* ===== أدوات مشتركة ===== */
+    function cell(tr, text) { const td = document.createElement("td"); td.textContent = text || "-"; tr.appendChild(td); return td; }
+    function actions(tr, onEdit, onDel) {
+      const td = document.createElement("td");
+      const a = document.createElement("button"); a.className = "btn small"; a.textContent = "تعديل"; a.onclick = onEdit;
+      const b = document.createElement("button"); b.className = "btn red small"; b.textContent = "حذف"; b.onclick = onDel;
+      td.append(a, b); tr.appendChild(td);
+    }
+    function emptyRow(tbody, cols) {
+      const tr = document.createElement("tr"), td = document.createElement("td");
+      td.colSpan = cols; td.className = "empty"; td.textContent = "لا توجد بيانات";
+      tr.appendChild(td); tbody.appendChild(tr);
+    }
+    function exportCSV(head, rows, name) {
+      if (!rows.length) { alert("لا توجد بيانات للتصدير"); return; }
+      const esc = v => '"' + String(v ?? "").replace(/"/g, '""') + '"';
+      const csv = "\uFEFF" + [head, ...rows].map(r => r.map(esc).join(",")).join("\n");
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8" }));
+      a.download = name; a.click();
+    }
+
+    /* ===== المحاضرات ===== */
+    const LF = { lTitle:"title", lCourse:"course", lInstructor:"instructor", lDate:"date", lTime:"time", lHall:"hall", lType:"type", lStatus:"status", lLink:"link", lNotes:"notes" };
+
+    $("lectureForm").addEventListener("submit", e => {
+      e.preventDefault();
+      const list = get(LK), data = {};
+      for (const [id, key] of Object.entries(LF)) data[key] = $(id).value.trim();
+      const editId = $("lEditId").value;
+      if (editId) {
+        const i = list.findIndex(x => x.id === editId);
+        if (i > -1) list[i] = { ...list[i], ...data };
+      } else list.push({ id: Date.now().toString(36), ...data });
+      set(LK, list); resetLecture(); renderLectures();
+    });
+    function resetLecture() {
+      $("lectureForm").reset(); $("lEditId").value = "";
+      $("lFormTitle").textContent = "إضافة محاضرة جديدة";
+      $("lCancel").classList.add("hidden");
+    }
+    $("lCancel").addEventListener("click", resetLecture);
+    function editLecture(id) {
+      const x = get(LK).find(l => l.id === id); if (!x) return;
+      for (const [fid, key] of Object.entries(LF)) $(fid).value = x[key] || "";
+      $("lEditId").value = id;
+      $("lFormTitle").textContent = "تعديل المحاضرة";
+      $("lCancel").classList.remove("hidden");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+    function delLecture(id) {
+      if (confirm("حذف هذه المحاضرة؟")) { set(LK, get(LK).filter(l => l.id !== id)); renderLectures(); }
+    }
+    $("lClear").addEventListener("click", () => {
+      if (confirm("سيتم حذف كل المحاضرات نهائياً. متأكد؟")) { set(LK, []); renderLectures(); }
+    });
+    function renderLectures() {
+      const all = get(LK), q = $("lSearch").value.trim().toLowerCase(), f = $("lFilter").value;
+      const list = all
+        .filter(l => [l.title, l.course, l.instructor].join(" ").toLowerCase().includes(q) && (!f || l.status === f))
+        .sort((a, b) => (a.date + (a.time||"")).localeCompare(b.date + (b.time||"")));
+      const tb = $("lRows"); tb.innerHTML = "";
+      if (!list.length) emptyRow(tb, 9);
+      list.forEach(l => {
+        const tr = document.createElement("tr");
+        const t = cell(tr, l.title);
+        if (l.link && /^https?:\/\//i.test(l.link)) {
+          t.textContent = ""; const a = document.createElement("a");
+          a.href = l.link; a.target = "_blank"; a.rel = "noopener"; a.textContent = l.title; t.appendChild(a);
+        }
+        cell(tr, l.course); cell(tr, l.instructor); cell(tr, l.date); cell(tr, l.time); cell(tr, l.hall); cell(tr, l.type);
+        const st = document.createElement("td"), bd = document.createElement("span");
+        bd.className = "badge " + ({ "مجدولة":"b-orange", "تمت":"b-green", "ملغاة":"b-red" }[l.status] || "b-gray");
+        bd.textContent = l.status; st.appendChild(bd); tr.appendChild(st);
+        actions(tr, () => editLecture(l.id), () => delLecture(l.id));
+        tb.appendChild(tr);
+      });
+      const today = new Date().toISOString().slice(0, 10);
+      $("lTotal").textContent = all.length;
+      $("lCourses").textContent = new Set(all.map(l => l.course).filter(Boolean)).size;
+      $("lUpcoming").textContent = all.filter(l => l.status === "مجدولة" && l.date >= today).length;
+    }
+    $("lSearch").addEventListener("input", renderLectures);
+    $("lFilter").addEventListener("change", renderLectures);
+    $("lExport").addEventListener("click", () => exportCSV(
+      ["العنوان","المقرر","المحاضر","التاريخ","الوقت","المكان","النوع","الحالة","الرابط","ملاحظات"],
+      get(LK).map(l => [l.title,l.course,l.instructor,l.date,l.time,l.hall,l.type,l.status,l.link,l.notes]), "lectures.csv"));
+
+    /* ===== الطلبة ===== */
+    const SF = ["code","name","dept","level","phone","email","gpa","status"];
+    $("studentForm").addEventListener("submit", e => {
+      e.preventDefault();
+      const list = get(SK), data = {};
+      SF.forEach(f => data[f] = $(f).value.trim());
+      const editId = $("sEditId").value;
+      if (editId) {
+        const i = list.findIndex(s => s.id === editId);
+        if (i > -1) list[i] = { ...list[i], ...data };
+      } else {
+        if (list.some(s => s.code === data.code)) { alert("الكود الجامعي مسجل من قبل"); return; }
+        list.push({ id: Date.now().toString(36), ...data });
+      }
+      set(SK, list); resetStudent(); renderStudents();
+    });
+    function resetStudent() {
+      $("studentForm").reset(); $("sEditId").value = "";
+      $("sFormTitle").textContent = "إضافة طالب جديد";
+      $("sCancel").classList.add("hidden");
+    }
+    $("sCancel").addEventListener("click", resetStudent);
+    function editStudent(id) {
+      const s = get(SK).find(x => x.id === id); if (!s) return;
+      SF.forEach(f => $(f).value = s[f] || "");
+      $("sEditId").value = id;
+      $("sFormTitle").textContent = "تعديل بيانات الطالب";
+      $("sCancel").classList.remove("hidden");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+    function delStudent(id) {
+      if (confirm("حذف هذا الطالب؟")) { set(SK, get(SK).filter(s => s.id !== id)); renderStudents(); }
+    }
+    function renderStudents() {
+      const all = get(SK), q = $("sSearch").value.trim().toLowerCase();
+      const list = all.filter(s => [s.code, s.name, s.dept].join(" ").toLowerCase().includes(q));
+      const tb = $("sRows"); tb.innerHTML = "";
+      if (!list.length) emptyRow(tb, 8);
+      list.forEach(s => {
+        const tr = document.createElement("tr");
+        [s.code, s.name, s.dept, s.level, s.phone, s.gpa, s.status].forEach(v => cell(tr, v));
+        actions(tr, () => editStudent(s.id), () => delStudent(s.id));
+        tb.appendChild(tr);
+      });
+      $("sTotal").textContent = all.length;
+      $("sDepts").textContent = new Set(all.map(s => s.dept).filter(Boolean)).size;
+      const g = all.map(s => parseFloat(s.gpa)).filter(n => !isNaN(n));
+      $("sGpa").textContent = g.length ? (g.reduce((a, b) => a + b, 0) / g.length).toFixed(2) : "0.00";
+    }
+    $("sSearch").addEventListener("input", renderStudents);
+    $("sExport").addEventListener("click", () => exportCSV(
+      ["الكود","الاسم","القسم","الفرقة","الهاتف","البريد","المعدل","الحالة"],
+      get(SK).map(s => [s.code,s.name,s.dept,s.level,s.phone,s.email,s.gpa,s.status]), "students.csv"));
+  </script>
+</body>
+</html>
